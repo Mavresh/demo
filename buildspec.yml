@@ -18,4 +18,6 @@ phases:
 
 artifacts:
   files:
-    - /var/www/html/index.html
+    - appspec.yml          # Include appspec.yml
+    - scripts/**/*          # Include all files in the scripts directory
+    - /var/www/html/index.html  # Include the HTML file
