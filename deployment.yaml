@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  labels:
+    app: my-app
+spec:
+  replicas: 2  # Number of pods
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: kuber-name  # Replace with your Docker image URL (e.g., dockerhub or ECR)
+          ports:
+            - containerPort: 80  # Port exposed by the container
+          env:
+            - name: ENV_VAR_NAME  # Example environment variable
+              value: "value"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80  # Port on which the service will be exposed
+      targetPort: 80  # Port on the container
+  type: LoadBalancer  # This exposes the service externally (can be changed to ClusterIP for internal)
