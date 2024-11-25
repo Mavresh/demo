@@ -16,4 +16,4 @@ hooks:
   ValidateService:
     - location: scripts/validate_service.sh
       timeout: 300
-      runas: ubunt
+      runas: ubuntu
