@@ -10,15 +10,20 @@ phases:
   build:
     commands:
       - echo "Build started on $(date)"
+      - echo "<h1>Welcome to NGINX</h1>" > index.html  # Create index.html
       - cp index.html /var/www/html/
   post_build:
     commands:
       - echo "Configuring NGINX"
       - nginx -t
       - systemctl restart nginx || echo "NGINX service might already be restarted"
+      - echo "Listing files in /var/www/html:"
+      - ls -l /var/www/html/
+      - echo "Listing current directory:"
+      - ls -l
 
 artifacts:
   files:
     - appspec.yml
     - scripts/**/*
-    - /var/www/html/index.html
+    - index.html       # Referencing the file created in the build phase
