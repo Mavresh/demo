@@ -3,19 +3,15 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Installing NGINX"
-      - apt-get update
-      - apt-get install nginx -y
-      - systemctl start nginx || echo "NGINX might already be running"
+      - echo "Installing dependencies..."
   build:
     commands:
       - echo "Build started on $(date)"
-      - cp index.html /var/www/html/
+      - git add .
+      - git commit -m "First commit"
   post_build:
     commands:
-      - echo "Configuring NGINX"
-      - nginx -t
-      - systemctl restart nginx || echo "NGINX service might already be restarted"
+      - echo "Build completed successfully!"
 
 artifacts:
   files:
