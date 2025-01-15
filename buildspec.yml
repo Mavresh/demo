@@ -1,29 +1,24 @@
 version: 0.2
 
 phases:
-  install:
+  pre_build:
     commands:
-      - echo "Installing NGINX"
-      - apt-get update
-      - apt-get install nginx -y
-      - systemctl start nginx || echo "NGINX might already be running"
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 476114147248.dkr.ecr.us-east-1.amazonaws.com
+      - echo Login successful.
   build:
     commands:
-      - echo "Build started on $(date)"
-      - echo "<h1>Welcome to NGINX</h1>" > index.html  # Create index.html
-      - cp index.html /var/www/html/
+      - echo Building the Docker image...
+      - docker build -t my-app .
+      - echo Tagging the Docker image...
+      - docker tag my-app:latest 476114147248.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
   post_build:
     commands:
-      - echo "Configuring NGINX"
-      - nginx -t
-      - systemctl restart nginx || echo "NGINX service might already be restarted"
-      - echo "Listing files in /var/www/html:"
-      - ls -l /var/www/html/
-      - echo "Listing current directory:"
-      - ls -l
+      - echo Pushing the Docker image to ECR...
+      - docker push 476114147248.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+      - echo Creating imagedefinitions.json...
+      - printf '[{"name":"my-app","imageUri":"%s"}]' 476114147248.dkr.ecr.us-east-1.amazonaws.com/my-app:latest > imagedefinitions.json
 
 artifacts:
   files:
-    - appspec.yml
-    - scripts/**/*
-    - index.html       # Referencing the file created in the build phase
+    - imagedefinitions.json
