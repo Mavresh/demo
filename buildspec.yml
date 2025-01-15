@@ -9,15 +9,15 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t my-app .
+      - docker build -t demoapp .
       - echo Tagging the Docker image...
-      - docker tag my-app:latest 476114147248.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+      - docker tag demoapp:latest 476114147248.dkr.ecr.us-east-1.amazonaws.com/demoapp:latest
   post_build:
     commands:
       - echo Pushing the Docker image to ECR...
-      - docker push 476114147248.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+      - docker push 476114147248.dkr.ecr.us-east-1.amazonaws.com/demoapp:latest
       - echo Creating imagedefinitions.json...
-      - printf '[{"name":"my-app","imageUri":"%s"}]' 476114147248.dkr.ecr.us-east-1.amazonaws.com/my-app:latest > imagedefinitions.json
+      - printf '[{"name":"demoapp","imageUri":"%s"}]' 476114147248.dkr.ecr.us-east-1.amazonaws.com/demoapp:latest > imagedefinitions.json
 
 artifacts:
   files:
