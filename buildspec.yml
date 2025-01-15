@@ -9,9 +9,9 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t demoapp .
+      - docker build -t demoapp:$CODEBUILD_RESOLVED_SOURCE_VERSION .
       - echo Tagging the Docker image...
-      - docker tag demoapp:latest 476114147248.dkr.ecr.us-east-1.amazonaws.com/demoapp:latest
+      - docker tag demoapp:$CODEBUILD_RESOLVED_SOURCE_VERSION 476114147248.dkr.ecr.us-east-1.amazonaws.com/demoapp:$CODEBUILD_RESOLVED_SOURCE_VERSION
   post_build:
     commands:
       - echo Pushing the Docker image to ECR...
